@@ -1,0 +1,101 @@
+<html>
+    <head>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+        #info {
+            position: fixed;
+            bottom: 10;
+            right: 10;
+            width: 500px;
+            height: 200px;
+            background-color: white;
+            border: 3px solid black;
+            font-family: monospace;
+            padding: 10px;
+        }
+    </style>
+    <!--script src="jquery.js"></script-->
+    <script type="application/javascript" src="SchoolShootings.js"></script>
+    <script type="application/javascript">
+        function createElements() {
+            var index;
+            for (index=0; index<shootings.length; index++) {
+                s = shootings[index];
+                var i;
+                //shot dead:
+                for (i=0; i<s.killed; i++) {
+                    var img = document.createElement('img');
+                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
+                    img.width = "40";
+                    img.height = "40";
+                    img.className = index + "_killed";
+                    img.onmouseover = function() {BackgroundHighlight(this.className)};
+                    img.onmouseout = function() {BackgroundReturn(this.className)};
+                    document.getElementById('bo').appendChild(img);
+                }
+                //shot injured:
+                for (i=0; i<s.injured; i++) {
+                    var img = document.createElement('img');
+                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
+                    img.width = "40";
+                    img.height = "40";
+                    img.className = index + "_injured";
+                    img.onmouseover = function() {BackgroundHighlight(this.className)};
+                    img.onmouseout = function() {BackgroundReturn(this.className)};
+                    document.getElementById('bo').appendChild(img);
+                }
+            }
+            /*
+            shootings.forEach(function(s){
+                var i;
+                //shot dead:
+                for (i=0; i<s.killed; i++) {
+                    var img = document.createElement('img');
+                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
+                    img.width = "40";
+                    img.height = "40";
+                    img.className = s.uid + "_killed";
+                    img.onmouseover = function() {BackgroundHighlight(this.className)};
+                    img.onmouseout = function() {BackgroundReturn(this.className)};
+                    document.getElementById('bo').appendChild(img);
+                }
+                //shot injured:
+                for (i=0; i<s.injured; i++) {
+                    var img = document.createElement('img');
+                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
+                    img.width = "40";
+                    img.height = "40";
+                    img.className = s.uid + "_injured";
+                    img.onmouseover = function() {BackgroundHighlight(this.className)};
+                    img.onmouseout = function() {BackgroundReturn(this.className)};
+                    document.getElementById('bo').appendChild(img);
+                }
+            });*/
+        }
+
+        function BackgroundHighlight(el) {
+            console.log(el);
+            var s = el.split("_")[0];
+            Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "black"});
+            Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "brown"});
+            shoot = shootings[s];
+            document.getElementById("info").innerHTML = `${shoot.day_of_week}, ${shoot.date} at ${shoot.school_name} in ${shoot.city}, ${shoot.state}; ${shoot.killed} killed and ${shoot.injured} injured`
+                + (shoot.age_shooter1? (shoot.age_shooter2? " by " + shoot.age_shooter1 + " and " + shoot.age_shooter2 + " year old shooters." : " by a " + shoot.age_shooter1 + " year old shooter.") :"")
+                + "<br><br>"
+                + (shoot.shooter_relationship1?"Relationship to school: "+shoot.shooter_relationship1+".<br>":"")
+                + (shoot.weapon?"Weapon: "+shoot.weapon+".<br>":"")
+                + (shoot.weapon_source? "Weapon Source: "+shoot.weapon_source + ".": "");
+        }
+
+        function BackgroundReturn(el) {
+            var s = el.split("_")[0];
+            Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "white"});
+            Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "white"});
+            document.getElementById("info").innerHTML = "People injured during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
+        }
+    </script>
+    </head>
+    <body id="bo" onload="createElements(this)" >
+        <div id="info">Date:06/06/2006<br>School:Junior High</div>
+    </body>
+</html>
