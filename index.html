@@ -13,6 +13,42 @@
             font-family: monospace;
             padding: 10px;
         }
+        
+        #chooser {
+            position: fixed;
+            bottom: 10;
+            left: 10;
+            width: 500px;
+            height: 60px;
+        }
+        
+        .choose:hover {
+            cursor: pointer;
+        }
+        
+        .choose {
+            float: left;
+            width: 90px;
+            height: 50px;
+            color: white;
+            text-align: center;
+            font-family: monospace;
+        }
+        
+        #police {
+            background-color: blue;
+            border: 3px solid blue;
+        }
+        
+        #students {
+            background-color: darkgoldenrod;
+            border: 3px solid darkgoldenrod;
+        }
+        
+        #outside {
+            background-color: darkolivegreen;
+            border: 3px solid darkolivegreen;
+        }
     </style>
     <!--script src="jquery.js"></script-->
     <script type="application/javascript" src="SchoolShootings.js"></script>
@@ -22,8 +58,16 @@
             for (index=0; index<shootings.length; index++) {
                 s = shootings[index];
                 var i;
-                //shot dead:
+                //sandbox:start
                 for (i=0; i<s.killed; i++) {
+                    document.getElementById('bo').innerHTML +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                }
+                for (i=0; i<s.injured; i++) {
+                    document.getElementById('bo').innerHTML +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                }
+                //sandbox:end
+                //shot dead:
+                /*for (i=0; i<s.killed; i++) {
                     var img = document.createElement('img');
                     img.src = "Mannequin.svg";
                     img.width = "40";
@@ -43,34 +87,8 @@
                     img.onmouseover = function() {BackgroundHighlight(this.className)};
                     img.onmouseout = function() {BackgroundReturn(this.className)};
                     document.getElementById('bo').appendChild(img);
-                }
+                }*/
             }
-            /*
-            shootings.forEach(function(s){
-                var i;
-                //shot dead:
-                for (i=0; i<s.killed; i++) {
-                    var img = document.createElement('img');
-                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
-                    img.width = "40";
-                    img.height = "40";
-                    img.className = s.uid + "_killed";
-                    img.onmouseover = function() {BackgroundHighlight(this.className)};
-                    img.onmouseout = function() {BackgroundReturn(this.className)};
-                    document.getElementById('bo').appendChild(img);
-                }
-                //shot injured:
-                for (i=0; i<s.injured; i++) {
-                    var img = document.createElement('img');
-                    img.src = "/Volumes/Empty/Illustrator/Mannequin.svg";
-                    img.width = "40";
-                    img.height = "40";
-                    img.className = s.uid + "_injured";
-                    img.onmouseover = function() {BackgroundHighlight(this.className)};
-                    img.onmouseout = function() {BackgroundReturn(this.className)};
-                    document.getElementById('bo').appendChild(img);
-                }
-            });*/
         }
 
         function BackgroundHighlight(el) {
@@ -84,18 +102,59 @@
                 + "<br><br>"
                 + (shoot.shooter_relationship1?"Relationship to school: "+shoot.shooter_relationship1+".<br>":"")
                 + (shoot.weapon?"Weapon: "+shoot.weapon+".<br>":"")
-                + (shoot.weapon_source? "Weapon Source: "+shoot.weapon_source + ".": "");
+                + (shoot.weapon_source? "Weapon Source: "+shoot.weapon_source + ".<br>": "")
+                + (shoot.shooting_type? "Shooting Type: "+shoot.shooting_type + ".":"")
         }
 
         function BackgroundReturn(el) {
             var s = el.split("_")[0];
             Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "white"});
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "white"});
-            document.getElementById("info").innerHTML = "People injured during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
+            document.getElementById("info").innerHTML = "People injured or killed during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
+        }
+        
+        var PoliceHighlight = false;
+        var OtherHighlight = false;
+        var StudentHighlight = false;
+        function Toggle(groupstr) {
+            if (groupstr=="police") {
+                Highlight(policeuids, PoliceHighlight, "blue");
+                var el = document.getElementById("police").style;
+                el.color = PoliceHighlight ? "white" : "black";
+                el.backgroundColor = PoliceHighlight ? "blue" : "white";
+                PoliceHighlight = !PoliceHighlight;
+            } else if (groupstr=="students") {
+                Highlight(studentuids, StudentHighlight, "darkgoldenrod");
+                var el = document.getElementById("students").style;
+                el.color = StudentHighlight ? "white" : "black";
+                el.backgroundColor = StudentHighlight ? "darkgoldenrod" : "white";
+                StudentHighlight = !StudentHighlight;
+            } else if (groupstr=="other") {
+                Highlight(othersuids, OtherHighlight, "darkolivegreen");
+                var el = document.getElementById("outside").style;
+                el.color = OtherHighlight ? "white" : "darkolivegreen";
+                el.backgroundColor = OtherHighlight ? "darkolivegreen" : "white";
+                OtherHighlight = !OtherHighlight;
+            }
+        }
+        
+        function Highlight(group, toggler, color) {
+            var s;
+            for (s=0; s<shootings.length; s++) {
+                if (group.indexOf(shootings[s].uid) > -1) {
+                    Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.fill = toggler?"black":color});
+                    Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.fill = toggler ? "black":color});
+                }
+            }
         }
     </script>
     </head>
     <body id="bo" onload="createElements(this)" >
-        <div id="info">Date:06/06/2006<br>School:Junior High</div>
+        <div id="chooser">
+            <div id="police" class="choose" onclick='Toggle("police")' onmouseover=""><p>Security</p></div>
+            <div id="outside" class="choose" onclick='Toggle("other")'><p>Outsiders</p></div>
+            <div id="students" class="choose" onclick='Toggle("students")'><p>Students</p></div>
+        </div>
+        <div id="info">People injured or killed during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
