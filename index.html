@@ -14,6 +14,18 @@
             padding: 10px;
         }
         
+        #flash {
+            background-color: red;
+            opacity: 1;
+            display: none;
+            z-index: 2;
+            top: 0; 
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: fixed;
+        }
+        
         .barcontainer {
             bottom: 60;
             background-color: brown;
@@ -38,14 +50,22 @@
             height: 50px;
         }
         
-        .choose:hover {
-            cursor: pointer;
-            opacity: 1;
+        #accidental {
+            position: fixed;
+            bottom: 10;
+            left: 400;
+            height: 50;
+            background-color: red;
         }
         
         .legend {
             transform: rotate(-90deg);
             font-family: monospace;
+        }
+        
+        .choose:hover {
+            cursor: pointer;
+            opacity: 1;
         }
         
         .choose {
@@ -56,6 +76,14 @@
             text-align: center;
             font-family: monospace;
             opacity: 0.5;
+        }
+        
+        .accident {
+            background-color: red;
+        }
+        
+        #accidental:hover {
+            cursor: default;
         }
         
         #police {
@@ -81,7 +109,6 @@
             for (index=0; index<shootings.length; index++) {
                 s = shootings[index];
                 var i;
-                //sandbox:start
                 var inner = "";
                 for (i=0; i<s.killed; i++) {
                     inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
@@ -90,30 +117,31 @@
                     inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
                 }
                 document.getElementById('bo').innerHTML += inner;
-                //sandbox:end
-                //shot dead:
-                /*for (i=0; i<s.killed; i++) {
-                    var img = document.createElement('img');
-                    img.src = "Mannequin.svg";
-                    img.width = "40";
-                    img.height = "40";
-                    img.className = index + "_killed";
-                    img.onmouseover = function() {BackgroundHighlight(this.className)};
-                    img.onmouseout = function() {BackgroundReturn(this.className)};
-                    document.getElementById('bo').appendChild(img);
-                }
-                //shot injured:
-                for (i=0; i<s.injured; i++) {
-                    var img = document.createElement('img');
-                    img.src = "Mannequin.svg";
-                    img.width = "40";
-                    img.height = "40";
-                    img.className = index + "_injured";
-                    img.onmouseover = function() {BackgroundHighlight(this.className)};
-                    img.onmouseout = function() {BackgroundReturn(this.className)};
-                    document.getElementById('bo').appendChild(img);
-                }*/
             }
+        }
+        
+        var FlashCount = 0;
+        var FlashText = false;
+        function flash() {
+            console.log("Flash");
+            FlashText = true;
+            var fadeTarget = document.getElementById("flash");
+            fadeTarget.style.display = "block";
+            fadeTarget.style.opacity = 1;
+            var fadeEffect = setInterval(function () {
+                console.log(fadeTarget.style.opacity);
+                if (fadeTarget.style.opacity > -1) {
+                    console.log(fadeTarget.style.opacity);
+                    fadeTarget.style.opacity -= 0.01;
+                    console.log(fadeTarget.style.opacity);
+                } else {
+                    console.log("Clearing");
+                    fadeTarget.style.display = "none";
+                    fadeTarget.style.opacity = 1;
+                    clearInterval(fadeEffect);
+                }
+            }, 10);
+            return "";
         }
 
         function BackgroundHighlight(el) {
@@ -122,20 +150,30 @@
             Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "black"});
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "brown"});
             shoot = shootings[s];
-            document.getElementById("info").innerHTML = `${shoot.day_of_week}, ${shoot.date} at ${shoot.school_name} in ${shoot.city}, ${shoot.state}; ${shoot.killed} killed and ${shoot.injured} injured`
+            var info = document.getElementById("info");
+            info.style.backgroundColor = "white";
+            info.innerHTML = `${shoot.day_of_week}, ${shoot.date} at ${shoot.school_name} in ${shoot.city}, ${shoot.state}; ${shoot.killed} killed and ${shoot.injured} injured`
                 + (shoot.age_shooter1? (shoot.age_shooter2? " by " + shoot.age_shooter1 + " and " + shoot.age_shooter2 + " year old shooters." : " by a " + shoot.age_shooter1 + " year old shooter.") :"")
                 + "<br><br>"
                 + (shoot.shooter_relationship1?"Relationship to school: "+shoot.shooter_relationship1+".<br>":"")
                 + (shoot.weapon?"Weapon: "+shoot.weapon+".<br>":"")
                 + (shoot.weapon_source? "Weapon Source: "+shoot.weapon_source + ".<br>": "")
-                + (shoot.shooting_type? "Shooting Type: "+shoot.shooting_type + ".":"")
+                + (shoot.shooting_type? "Shooting Type: "+ (shoot.shooting_type=="accidental" || shoot.shooting_type=="accidental or targeted"?`<span class='accident'>${shoot.shooting_type+(FlashCount++ %15 == 9?flash():"")}</span>`:shoot.shooting_type) + ".":"");
         }
 
         function BackgroundReturn(el) {
             var s = el.split("_")[0];
             Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "white"});
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "white"});
-            document.getElementById("info").innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
+            var info = document.getElementById("info");
+            if (!FlashText) {
+                info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
+                info.style.backgroundColor = "white";
+            } else {
+                info.innerHTML = "<span style='color:white; font-size:25pt;'>Accidental shots in US schools killed three and injured 40 people over the last 20 years.</span>";
+                info.style.backgroundColor = "red";
+                FlashText = false;
+            }
         }
         
         var PoliceHighlight = false;
@@ -175,9 +213,22 @@
                 }
             }
         }
+        
+        var AccidentalHighlight = false;
+        function HighlightAccidental() {
+            var s;
+            for (s=0; s<shootings.length; s++) {
+                if (accidental.indexOf(shootings[s].uid) > -1) {
+                    Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = AccidentalHighlight ? "white":"black"});
+                    Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = AccidentalHighlight ? "white":"brown"});
+                }
+            }
+            AccidentalHighlight = !AccidentalHighlight;
+        }
     </script>
     </head>
     <body id="bo" onload="createElements(this)" >
+        <div id="flash"></div>
         <div id="policeContainer" style="height:11; left: 10;" class="barcontainer bar">
             <p class="legend" style="margin-top:-70;background-color:white">Killed 5<br>Injured 6</p>
             <div style="height: 5;" class="killed bar"></div>
@@ -195,6 +246,7 @@
             <div id="outside" class="choose" onclick='Toggle("other")'><p style="margin: 5 0">Non-Students</p></div>
             <div id="students" class="choose" onclick='Toggle("students")'><p>Students</p></div>
         </div>
+        <div id="accidental" class="choose" onmouseover='HighlightAccidental()' onmouseout="HighlightAccidental()" style="margin-left: 10"><p>Accidental</p></div>
         <div id="info">People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
