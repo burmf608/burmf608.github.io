@@ -14,25 +14,48 @@
             padding: 10px;
         }
         
+        .barcontainer {
+            bottom: 60;
+            background-color: brown;
+            visibility: hidden;
+        }
+        
+        .bar {
+            position: absolute;
+            width: 90px;
+        }
+        
+        .killed {
+            background-color: black;
+            bottom: 0;
+        }
+        
         #chooser {
             position: fixed;
             bottom: 10;
             left: 10;
-            width: 500px;
-            height: 60px;
+            width: 270px;
+            height: 50px;
         }
         
         .choose:hover {
             cursor: pointer;
+            opacity: 1;
+        }
+        
+        .legend {
+            transform: rotate(-90deg);
+            font-family: monospace;
         }
         
         .choose {
             float: left;
-            width: 90px;
-            height: 50px;
+            width: 84px;
+            height: 44px;
             color: white;
             text-align: center;
             font-family: monospace;
+            opacity: 0.5;
         }
         
         #police {
@@ -59,12 +82,14 @@
                 s = shootings[index];
                 var i;
                 //sandbox:start
+                var inner = "";
                 for (i=0; i<s.killed; i++) {
-                    document.getElementById('bo').innerHTML +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
                 }
                 for (i=0; i<s.injured; i++) {
-                    document.getElementById('bo').innerHTML +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
                 }
+                document.getElementById('bo').innerHTML += inner;
                 //sandbox:end
                 //shot dead:
                 /*for (i=0; i<s.killed; i++) {
@@ -110,7 +135,7 @@
             var s = el.split("_")[0];
             Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "white"});
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "white"});
-            document.getElementById("info").innerHTML = "People injured or killed during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
+            document.getElementById("info").innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post."
         }
         
         var PoliceHighlight = false;
@@ -122,18 +147,21 @@
                 var el = document.getElementById("police").style;
                 el.color = PoliceHighlight ? "white" : "black";
                 el.backgroundColor = PoliceHighlight ? "blue" : "white";
+                document.getElementById("policeContainer").style.visibility = PoliceHighlight ? "hidden" : "visible";
                 PoliceHighlight = !PoliceHighlight;
             } else if (groupstr=="students") {
                 Highlight(studentuids, StudentHighlight, "darkgoldenrod");
                 var el = document.getElementById("students").style;
                 el.color = StudentHighlight ? "white" : "black";
                 el.backgroundColor = StudentHighlight ? "darkgoldenrod" : "white";
+                document.getElementById("studentContainer").style.visibility = StudentHighlight ? "hidden" : "visible";
                 StudentHighlight = !StudentHighlight;
             } else if (groupstr=="other") {
                 Highlight(othersuids, OtherHighlight, "darkolivegreen");
                 var el = document.getElementById("outside").style;
                 el.color = OtherHighlight ? "white" : "darkolivegreen";
                 el.backgroundColor = OtherHighlight ? "darkolivegreen" : "white";
+                document.getElementById("outsideContainer").style.visibility = OtherHighlight ? "hidden" : "visible";
                 OtherHighlight = !OtherHighlight;
             }
         }
@@ -150,11 +178,23 @@
     </script>
     </head>
     <body id="bo" onload="createElements(this)" >
+        <div id="policeContainer" style="height:11; left: 10;" class="barcontainer bar">
+            <p class="legend" style="margin-top:-70;background-color:white">Killed 5<br>Injured 6</p>
+            <div style="height: 5;" class="killed bar"></div>
+        </div>
+        <div id="outsideContainer" style="height: 187; left: 100;" class="barcontainer bar">
+            <p class="legend" style="margin-top:35;color: white">Killed 82<br>Injured 105</p>
+            <div style="height: 82;" class="killed bar"></div>
+        </div>
+        <div id="studentContainer" style="height: 239; left: 190;" class="barcontainer bar">
+            <p class="legend" style="margin-top: 87; color: white">Killed 56<br>Injured 183</p>
+            <div style="height: 56;" class="killed bar"></div>
+        </div>
         <div id="chooser">
             <div id="police" class="choose" onclick='Toggle("police")' onmouseover=""><p>Security</p></div>
-            <div id="outside" class="choose" onclick='Toggle("other")'><p>Outsiders</p></div>
+            <div id="outside" class="choose" onclick='Toggle("other")'><p style="margin: 5 0">Non-Students</p></div>
             <div id="students" class="choose" onclick='Toggle("students")'><p>Students</p></div>
         </div>
-        <div id="info">People injured or killed during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
+        <div id="info">People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
