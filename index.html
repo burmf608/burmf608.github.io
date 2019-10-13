@@ -147,6 +147,14 @@
             background-color: darkolivegreen;
             border: 3px solid darkolivegreen;
         }
+        
+        #inj:hover~.killed {
+            background-color: black;
+        }
+        
+        #kil:hover~.injured {
+            background-color: brown;
+        }
     </style>
     <script type="application/javascript" src="SchoolShootings.js"></script>
     <script type="application/javascript">
@@ -199,8 +207,8 @@
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "brown"});
             shoot = shootings[s];
             var info = document.getElementById("info");
-            info.style.backgroundColor = "white";
-            info.innerHTML = `${shoot.day_of_week}, ${shoot.date} at ${shoot.school_name} in ${shoot.city}, ${shoot.state}; ${shoot.killed} killed and ${shoot.injured} injured`
+            info.style.backgroundColor = "";
+            info.innerHTML = `${shoot.day_of_week}, ${shoot.date} at ${shoot.school_name} in ${shoot.city}, ${shoot.state}; ${shoot.killed} <span style="background-color: black; color:white">killed</span> and ${shoot.injured} <span style="background-color: brown; color:white">injured</span>`
                 + (shoot.age_shooter1? (shoot.age_shooter2? " by " + shoot.age_shooter1 + " and " + shoot.age_shooter2 + " year old shooters." : " by a " + shoot.age_shooter1 + " year old shooter.") :"")
                 + "<br><br>"
                 + (shoot.shooter_relationship1?"Relationship to school: "+shoot.shooter_relationship1+".<br>":"")
@@ -211,12 +219,12 @@
 
         function BackgroundReturn(el) {
             var s = el.split("_")[0];
-            Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = "white"});
-            Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = "white"});
+            Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = ""});
+            Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = ""});
             var info = document.getElementById("info");
             if (!FlashText) {
                 info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
-                info.style.backgroundColor = "white";
+                info.style.backgroundColor = "";
             } else {
                 info.innerHTML = "<span style='color:white; font-size:25pt;'>Accidental shots in US schools killed three and injured 40 people over the last 20 years.</span>";
                 info.style.backgroundColor = "red";
@@ -245,7 +253,7 @@
             } else if (groupstr=="other") {
                 Highlight(othersuids, OtherHighlight, "darkolivegreen");
                 var el = document.getElementById("outside").style;
-                el.color = OtherHighlight ? "white" : "darkolivegreen";
+                el.color = OtherHighlight ? "white" : "black";
                 el.backgroundColor = OtherHighlight ? "darkolivegreen" : "white";
                 document.getElementById("outsideContainer").style.visibility = OtherHighlight ? "hidden" : "visible";
                 OtherHighlight = !OtherHighlight;
@@ -256,8 +264,8 @@
             var s;
             for (s=0; s<shootings.length; s++) {
                 if (group.indexOf(shootings[s].uid) > -1) {
-                    Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.fill = toggler?"black":color});
-                    Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.fill = toggler ? "black":color});
+                    Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.fill = toggler? "":color});
+                    Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.fill = toggler ? "":color});
                 }
             }
         }
@@ -265,7 +273,7 @@
         var AccidentalHighlight = false;
         function HighlightAccidental() {
             var info = document.getElementById("info");
-            info.style.backgroundColor = "white";
+            info.style.backgroundColor = "";
             if (AccidentalHighlight) {
                 info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
             } else {
@@ -277,7 +285,7 @@
         var LegalHighlight = false;
         function HighlightLegal() {
             var info = document.getElementById("info");
-            info.style.backgroundColor = "white";
+            info.style.backgroundColor = "";
             info.innerHTML = !LegalHighlight ? "Only 74 out of 437 people injured or killed (17%) suffered from guns in legal possession of the shooter. For another 145 there is no information about ownership. The remaining 218 were shot at using a gun not in legal possession of the shooter." : "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
             LegalHighlight = !LegalHighlight;
         }
@@ -305,6 +313,6 @@
         <div id="accidental" class="choose" onmouseover='HighlightAccidental()' onmouseout="HighlightAccidental()"><p>Accidental</p></div>
         <div id="legal" class="choose" onmouseover='HighlightLegal()' onmouseout="HighlightLegal()"><p>Legal</p></div>
         <div id="illegal"><p>Illegal<br>&nbsp;Possession</p></div>
-        <div id="info">People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
+        <div id="info">People <span id="inj" style='background-color:brown; color: white'>injured</span> or <span id="kil" style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
