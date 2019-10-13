@@ -78,6 +78,14 @@
             background-color: red;
         }
         
+        #accidental:hover~.acc{
+            background-color: red;
+        }
+        
+        #accidental:hover~.acc.killed {
+            fill: red;
+        }
+        
         #legal {
             z-index: 1;
             position: fixed;
@@ -256,13 +264,6 @@
         
         var AccidentalHighlight = false;
         function HighlightAccidental() {
-            var s;
-            for (s=0; s<shootings.length; s++) {
-                if (accidental.indexOf(shootings[s].uid) > -1) {
-                    Array.from(document.getElementsByClassName(s+"_killed")).forEach(function(l) {l.style.backgroundColor = AccidentalHighlight ? "white":"black"});
-                    Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = AccidentalHighlight ? "white":"brown"});
-                }
-            }
             var info = document.getElementById("info");
             info.style.backgroundColor = "white";
             if (AccidentalHighlight) {
