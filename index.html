@@ -95,6 +95,10 @@
             background-color: grey;
         }
         
+        #legal:hover {
+            cursor: default;
+        }
+        
         #legal:hover~#illegal {
             visibility: visible;
             opacity: 0.15;
@@ -223,7 +227,7 @@
             Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = ""});
             var info = document.getElementById("info");
             if (!FlashText) {
-                info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
+                info.innerHTML = "People <span id='inj' style='background-color:brown; color: white'>injured</span> or <span id='kil' style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
                 info.style.backgroundColor = "";
             } else {
                 info.innerHTML = "<span style='color:white; font-size:25pt;'>Accidental shots in US schools killed three and injured 40 people over the last 20 years.</span>";
@@ -275,7 +279,7 @@
             var info = document.getElementById("info");
             info.style.backgroundColor = "";
             if (AccidentalHighlight) {
-                info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
+                info.innerHTML = "People <span id='inj' style='background-color:brown; color: white'>injured</span> or <span id='kil' style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
             } else {
                 info.innerHTML = "Accidental shots in US schools killed three and injured 40 people over the last 20 years.";
             }
