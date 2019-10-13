@@ -37,7 +37,7 @@
             width: 90px;
         }
         
-        .killed {
+        .killer {
             background-color: black;
             bottom: 0;
         }
@@ -48,14 +48,6 @@
             left: 10;
             width: 270px;
             height: 50px;
-        }
-        
-        #accidental {
-            position: fixed;
-            bottom: 10;
-            left: 280;
-            height: 50;
-            background-color: red;
         }
         
         .legend {
@@ -76,6 +68,53 @@
             text-align: center;
             font-family: monospace;
             opacity: 0.5;
+        }
+        
+        #accidental {
+            position: fixed;
+            bottom: 10;
+            left: 290;
+            border: 3px solid red;
+            background-color: red;
+        }
+        
+        #legal {
+            z-index: 1;
+            position: fixed;
+            bottom: 10;
+            left: 390;
+            height: 50;
+            background-color: grey;
+        }
+        
+        #legal:hover~#illegal {
+            visibility: visible;
+            opacity: 0.15;
+        }
+        
+        #legal:hover~.illegal{
+            opacity: 0.1;
+        }
+        
+        #legal:hover~.legal{
+            fill: grey;
+        }
+        
+        #illegal {
+            position: fixed;
+            bottom: 10;
+            left: 390;
+            height: 98;
+            width: 176;
+            font-family: monospace;
+            background-color: darkgray;
+            visibility: hidden;
+        }
+        
+        #illegal p {
+            text-align: right;
+            margin-right: 5;
+            color: white;
         }
         
         .accident {
@@ -101,7 +140,6 @@
             border: 3px solid darkolivegreen;
         }
     </style>
-    <!--script src="jquery.js"></script-->
     <script type="application/javascript" src="SchoolShootings.js"></script>
     <script type="application/javascript">
         function createElements() {
@@ -110,11 +148,13 @@
                 s = shootings[index];
                 var i;
                 var inner = "";
+                legality = legal.indexOf(s.uid)>-1;
+                    accidentiality = accidental.indexOf(s.uid)>-1;
                 for (i=0; i<s.killed; i++) {
-                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_killed ${index} killed ${(legality?'legal':'illegal')} ${(accidentiality?'acc':'nacc')}" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
                 }
                 for (i=0; i<s.injured; i++) {
-                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
+                    inner +=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.74 95.14" height=40 width=40 class="${index}_injured ${index} injured ${(legality?'legal':'illegal')} ${(accidentiality?'acc':'nacc')}" onmouseover=BackgroundHighlight("${index}_killed") onmouseout=BackgroundReturn("${index}_killed")><circle cx="21.37" cy="11.17" r="11.17"/><path d="M70.87,48.25s18.92-4.77,18.92,3.48,5.5,33.06,0,33.1S83.93,58.5,83.93,58.5s4.46,61.17-5.31,61.17c-5.31,0-7.75-33.88-7.75-33.88Z" transform="translate(-49.5 -24.53)"/><path d="M70.87,48.25s-18.93-4.77-18.93,3.48-5.5,33.06,0,33.1S57.8,58.5,57.8,58.5s-4.46,61.17,5.31,61.17c5.31,0,7.76-33.88,7.76-33.88Z" transform="translate(-49.5 -24.53)"/></svg>`;
                 }
                 document.getElementById('bo').innerHTML += inner;
             }
@@ -232,29 +272,38 @@
             }
             AccidentalHighlight = !AccidentalHighlight;
         }
+        
+        var LegalHighlight = false;
+        function HighlightLegal() {
+            var info = document.getElementById("info");
+            info.style.backgroundColor = "white";
+            info.innerHTML = !LegalHighlight ? "Only 112 out of 437 people injured or killed (26%) suffered from guns in legal possession of the shooter. For another 145 there is no information about ownership. The remaining 325 were shot at using a gun not in legal possession of the shooter." : "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
+            LegalHighlight = !LegalHighlight;
+        }
     </script>
     </head>
     <body id="bo" onload="createElements(this)" >
         <div id="flash"></div>
         <div id="policeContainer" style="height:11; left: 10;" class="barcontainer bar">
             <p class="legend" style="margin-top:-70;background-color:white">Killed 5<br>Injured 6</p>
-            <div style="height: 5;" class="killed bar"></div>
+            <div style="height: 5;" class="killer bar"></div>
         </div>
         <div id="outsideContainer" style="height: 187; left: 100;" class="barcontainer bar">
             <p class="legend" style="margin-top:35;color: white">Killed 82<br>Injured 105</p>
-            <div style="height: 82;" class="killed bar"></div>
+            <div style="height: 82;" class="killer bar"></div>
         </div>
         <div id="studentContainer" style="height: 239; left: 190;" class="barcontainer bar">
             <p class="legend" style="margin-top: 87; color: white">Killed 56<br>Injured 183</p>
-            <div style="height: 56;" class="killed bar"></div>
+            <div style="height: 56;" class="killer bar"></div>
         </div>
         <div id="chooser">
             <div id="police" class="choose" onclick='Toggle("police")'><p>Security</p></div>
             <div id="outside" class="choose" onclick='Toggle("other")'><p style="margin: 5 0">Non-Students</p></div>
             <div id="students" class="choose" onclick='Toggle("students")'><p>Students</p></div>
         </div>
-        <div id="accidental" class="choose" onmouseover='HighlightAccidental()' onmouseout="HighlightAccidental()" style="margin-left: 10"><p>Accidental</p></div>
-        <!--div id="legal" class="choose" ><p>Legal</p></div-->
+        <div id="accidental" class="choose" onmouseover='HighlightAccidental()' onmouseout="HighlightAccidental()"><p>Accidental</p></div>
+        <div id="legal" class="choose" onmouseover='HighlightLegal()' onmouseout="HighlightLegal()"><p>Legal</p></div>
+        <div id="illegal"><p>Illegal<br>&nbsp;Possession</p></div>
         <div id="info">People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
