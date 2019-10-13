@@ -53,7 +53,7 @@
         #accidental {
             position: fixed;
             bottom: 10;
-            left: 400;
+            left: 280;
             height: 50;
             background-color: red;
         }
@@ -223,6 +223,13 @@
                     Array.from(document.getElementsByClassName(s+"_injured")).forEach(function(l) {l.style.backgroundColor = AccidentalHighlight ? "white":"brown"});
                 }
             }
+            var info = document.getElementById("info");
+            info.style.backgroundColor = "white";
+            if (AccidentalHighlight) {
+                info.innerHTML = "People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.";
+            } else {
+                info.innerHTML = "Accidental shots in US schools killed three and injured 40 people over the last 20 years.";
+            }
             AccidentalHighlight = !AccidentalHighlight;
         }
     </script>
@@ -242,11 +249,12 @@
             <div style="height: 56;" class="killed bar"></div>
         </div>
         <div id="chooser">
-            <div id="police" class="choose" onclick='Toggle("police")' onmouseover=""><p>Security</p></div>
+            <div id="police" class="choose" onclick='Toggle("police")'><p>Security</p></div>
             <div id="outside" class="choose" onclick='Toggle("other")'><p style="margin: 5 0">Non-Students</p></div>
             <div id="students" class="choose" onclick='Toggle("students")'><p>Students</p></div>
         </div>
         <div id="accidental" class="choose" onmouseover='HighlightAccidental()' onmouseout="HighlightAccidental()" style="margin-left: 10"><p>Accidental</p></div>
+        <!--div id="legal" class="choose" ><p>Legal</p></div-->
         <div id="info">People <span style='background-color:brown; color: white'>injured</span> or <span style='background-color: black; color:white'>killed</span> during school shootings since Columbine.<br>Created by Frederik Burmester on 09/09/2019 for the Visualising Data Midterm.<br>Data Source: The Washington Post.</div>
     </body>
 </html>
